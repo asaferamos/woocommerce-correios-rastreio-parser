@@ -1,0 +1,17 @@
+{
+    "name": "asaferamos/woocommerce-correios-rastreio-parser",
+    "description": "Atualize automaticamente o andamento do pedido com o rastreio dos Correios",
+	"homepage": "https://github.com/asaferamos/woocommerce-correios-rastreio-parser",
+	"type": "wordpress-plugin",
+    "license": "GPL3",
+    "authors": [
+        {
+            "name": "Asafe Ramos",
+            "email": "asafe@asaferamos.com",
+            "homepage": "http://asaferamos.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+    }
+}
