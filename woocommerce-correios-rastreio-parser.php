@@ -14,7 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'WC_Correios_Status_Parser' ) ) {
+	include_once dirname( __FILE__ ) . '/conf.php';
 	include_once dirname( __FILE__ ) . '/class-wc-correios-status-parser.php';
 
-	new WC_Correios_Status_Parser();
+	new WC_Correios_Status_Parser($_conf);
 }

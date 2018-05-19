@@ -4,7 +4,10 @@ if (!defined('ABSPATH')) {
 }
 
 class WC_Correios_Status_Parser {
-    public function __construct() {
+    private $_conf;
+    
+    public function __construct($_conf) {
+        $this->_conf = $_conf;
         add_action('admin_menu', array($this, 'admin_menu'));
     }
 
@@ -39,34 +42,18 @@ class WC_Correios_Status_Parser {
     }
     
     public function getListEvents($correiosTrack){
-        # Our new data
         $data = array(
             'objetos' => $correiosTrack
         );
-        $url = 'http://www2.correios.com.br/sistemas/rastreamento/newprint.cfm';
-        $ch = curl_init($url);
-        $postString = http_build_query($data, '', '&');
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $correiosPage = utf8_encode(curl_exec($ch));
-        curl_close($ch);
-        // var_dump($correiosPage);die;
+        
+        $correiosPage = self::getPage($data);
+        
+        preg_match_all($this->_conf['regexp']['table'], $correiosPage, $cTable, PREG_SET_ORDER,0);
 
-        // $correiosPage = file_get_contents('test.html', true);
-        // var_dump($correiosPage);die;
-        $re = [
-            'table'   => '/(?s)(?<=\<table class=\"listEvent sro\"\>)(.*?)(?=\<\/table\>)/',
-            'tr'      => '/(?s)(?<=\<tr\>)(.*?)(?=\<\/tr\>)/',
-            'dtEvent' => '/(?s)(?<=\<td class=\"sroDtEvent\" valign=\"top\">)(.*?)(?=\<\/td\>)/',
-            'lbEvent' => '/(?s)(?<=\<td class=\"sroLbEvent\">)(.*?)(?=\<\/td\>)/'
-        ];
-        preg_match_all($re['table'], $correiosPage, $cTable, PREG_SET_ORDER,0);
+        preg_match_all($this->_conf['regexp']['tr'], $cTable[0][0], $cTr);
 
-        preg_match_all($re['tr'], $cTable[0][0], $cTr);
-        // var_dump($cTr[0]);die;
         foreach ($cTr[0] as $key => $vTr) {
-            preg_match_all($re['dtEvent'], $vTr, $vTd);
+            preg_match_all($this->_conf['regexp']['dtEvent'], $vTr, $vTd);
             $new_str = str_replace("&nbsp;", ' ', strip_tags($vTd[0][0]));
             $lines = explode("\n", $new_str);
             
@@ -76,7 +63,7 @@ class WC_Correios_Status_Parser {
                     echo $line, '<br>';
             }
             
-            preg_match_all($re['lbEvent'], $vTr, $vTd);
+            preg_match_all($this->_conf['regexp']['lbEvent'], $vTr, $vTd);
 
             $new_str = str_replace("&nbsp;", ' ', strip_tags($vTd[0][0]));
             $lines = explode("\n", $new_str);
@@ -89,7 +76,19 @@ class WC_Correios_Status_Parser {
             echo '<hr>';
             // die;
         }
-        // Print the entire match result
+        
 
+    }
+    
+    private function getPage($data){
+        $ch = curl_init($this->_conf['urlParser']);
+        $postString = http_build_query($data, '', '&');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $correiosPage = utf8_encode(curl_exec($ch));
+        curl_close($ch);
+        
+        return $correiosPage;
     }
 }
