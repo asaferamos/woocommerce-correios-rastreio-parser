@@ -34,8 +34,8 @@ class WC_Correios_Status_Parser {
             if($value->get_order_number() != 251)
                 die;
             $correiosTrack = $value->get_meta('_correios_tracking_code');
-            WC_Correios_Status_Parser::getListEvents($correiosTrack);
-            echo '<hr>';
+            $eventos = self::getListEvents($correiosTrack);
+            echo '<pre>'; var_dump($eventos); echo '</pre>';
         }
         
         
@@ -48,19 +48,39 @@ class WC_Correios_Status_Parser {
         
         $correiosPage = self::getPage($data);
         
+        /**
+         * Regexp para captura da <table>
+         * @var [type]
+         */
         preg_match_all($this->_conf['regexp']['table'], $correiosPage, $cTable, PREG_SET_ORDER,0);
-
+        
+        /**
+         * Regeexp para captura das <tr>
+         * @var [type]
+         */
         preg_match_all($this->_conf['regexp']['tr'], $cTable[0][0], $cTr);
-
-        foreach ($cTr[0] as $key => $vTr) {
+        
+        
+        /* Percorre todas <tr> para capturar eventos */
+        $events = [];
+        foreach ($cTr[0] as $event_id => $vTr) {
             preg_match_all($this->_conf['regexp']['dtEvent'], $vTr, $vTd);
             $new_str = str_replace("&nbsp;", ' ', strip_tags($vTd[0][0]));
             $lines = explode("\n", $new_str);
             
-            foreach ($lines as $line) {
+            foreach ($lines as $i => $line) {
                 $line = ltrim($line);
-                if(!empty($line))
-                    echo $line, '<br>';
+                if(!empty($line)){
+                    if(preg_match($this->_conf['regexp']['date'],$line)){
+                        $events[$event_id]['date'] = $line;
+                    }else{
+                        if(preg_match($this->_conf['regexp']['hour'],$line)){
+                            $events[$event_id]['hour'] = $line;
+                        }else{
+                            $events[$event_id]['location'] = $line;
+                        }
+                    }
+                }
             }
             
             preg_match_all($this->_conf['regexp']['lbEvent'], $vTr, $vTd);
@@ -71,13 +91,11 @@ class WC_Correios_Status_Parser {
             foreach ($lines as $line) {
                 $line = ltrim($line);
                 if(!empty($line))
-                    echo $line, '<br>';
+                    $events[$event_id]['label'] = $line;
             }
-            echo '<hr>';
-            // die;
         }
         
-
+        return $events;
     }
     
     private function getPage($data){
