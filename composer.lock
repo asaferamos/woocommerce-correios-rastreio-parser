@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asaferamos/correios-rastreio-api-parser.git",
-                "reference": "808ec67d0134cf814697f7b6b1fb5064e2afbbb1"
+                "reference": "2ca7b10670ada1ef2fcd344a74424441622a0394"
             },
             "require": {
                 "php": ">=5.4"
@@ -41,7 +41,7 @@
                 "correios api",
                 "rastrerio correios"
             ],
-            "time": "2018-05-24T19:20:31+00:00"
+            "time": "2018-05-25T02:14:26+00:00"
         }
     ],
     "packages-dev": [],

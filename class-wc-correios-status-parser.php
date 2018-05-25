@@ -22,7 +22,7 @@ class WC_Correios_Status_Parser {
     
     public function output() {
         $args = array(
-            'limit' => 10,
+            'limit' => 20,
             'status' => 'processing',
             'orderby' => 'date',
             'order' => 'ASC'
@@ -38,20 +38,30 @@ class WC_Correios_Status_Parser {
             if($correiosTrack == "") continue;
             $Correios->setCode($correiosTrack);
             $evento = $Correios->getEventLast();
-                        
-            $data[] = array(
-                'pedido'    => "<a href='" . $order->get_view_order_url() . "'>" . $order->get_order_number() . "</a>",
-                'nome'      => $order->get_formatted_billing_full_name(),
-                'rastreio'  => $correiosTrack,
-                'status'    => "<b>" . $evento->getLabel() . "</b>",
-                'data'      => $evento->getDate() . " " . $evento->getHour(),
-                'descricao' => $evento->getDescription()
-            );
             
-            
-            if($evento->getLabel() == 'Objeto entregue ao destinatário '){
-                $objectsCompleteds++;
-                $order->update_status( 'completed',  'Objeto entregue ao destinatário');
+            if(!$evento){
+                $data[] = array(
+                    'pedido'    => "<a href='" . $order->get_view_order_url() . "'>" . $order->get_order_number() . "</a>",
+                    'nome'      => $order->get_formatted_billing_full_name(),
+                    'rastreio'  => $correiosTrack,
+                    'status'    => "<b>ERRO AO BUSCAR CÓDIGO</b>",
+                    'data'      => "",
+                    'descricao' => ""
+                );
+            }else{    
+                $data[] = array(
+                    'pedido'    => "<a href='" . $order->get_view_order_url() . "'>" . $order->get_order_number() . "</a>",
+                    'nome'      => $order->get_formatted_billing_full_name(),
+                    'rastreio'  => $correiosTrack,
+                    'status'    => "<b>" . $evento->getLabel() . "</b>",
+                    'data'      => $evento->getDate() . " " . $evento->getHour(),
+                    'descricao' => $evento->getDescription()
+                );
+
+                if($evento->getLabel() == 'Objeto entregue ao destinatário '){
+                    $objectsCompleteds++;
+                    $order->update_status( 'completed',  'Objeto entregue ao destinatário.');
+                }
             }
             
         }
