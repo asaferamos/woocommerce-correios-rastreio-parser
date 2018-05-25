@@ -22,7 +22,7 @@ class WC_Correios_Status_Parser {
     
     public function output() {
         $args = array(
-            'limit' => -1,
+            'limit' => 10,
             'status' => 'processing',
         );
         $orders = wc_get_orders( $args );
