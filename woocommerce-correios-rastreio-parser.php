@@ -10,12 +10,14 @@
  * License: GPL3
 */
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit;
 }
 
-if ( ! class_exists( 'WC_Correios_Status_Parser' ) ) {
-	include_once dirname( __FILE__ ) . '/conf.php';
-	include_once dirname( __FILE__ ) . '/class-wc-correios-status-parser.php';
+require 'vendor/autoload.php';
 
-	new WC_Correios_Status_Parser($_conf);
+if ( ! class_exists( 'WC_Correios_Status_Parser' ) ) {
+	include_once dirname( __FILE__ ) . '/class-wc-correios-status-parser.php';
+	include_once dirname( __FILE__ ) . '/includes/class-correios-parser-table.php';
+
+	new WC_Correios_Status_Parser();
 }

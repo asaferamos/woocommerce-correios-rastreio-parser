@@ -4,6 +4,12 @@
 	"homepage": "https://github.com/asaferamos/woocommerce-correios-rastreio-parser",
 	"type": "wordpress-plugin",
     "license": "GPL3",
+    "repositories": [
+        {
+          "url": "https://github.com/asaferamos/correios-rastreio-api-parser.git",
+          "type": "git"
+        }
+    ],
     "authors": [
         {
             "name": "Asafe Ramos",
@@ -13,5 +19,6 @@
         }
     ],
     "require": {
+        "baru/correios": "dev-master"
     }
 }

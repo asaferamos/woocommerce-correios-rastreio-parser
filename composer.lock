@@ -1,0 +1,57 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "63ff26eface7c4f95dba629a1b510987",
+    "packages": [
+        {
+            "name": "baru/correios",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/asaferamos/correios-rastreio-api-parser.git",
+                "reference": "808ec67d0134cf814697f7b6b1fb5064e2afbbb1"
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.2.*"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Baru\\Correios\\": "src/"
+                }
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Asafe Ramos",
+                    "email": "asafe@asaferamos.com"
+                }
+            ],
+            "description": "Biblioteca que gera uma API a partir de parsing da página de rastreio dos Correios.",
+            "keywords": [
+                "correios",
+                "correios api",
+                "rastrerio correios"
+            ],
+            "time": "2018-05-24T19:20:31+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "baru/correios": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

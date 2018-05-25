@@ -4,10 +4,8 @@ if (!defined('ABSPATH')) {
 }
 
 class WC_Correios_Status_Parser {
-    private $_conf;
-    
-    public function __construct($_conf) {
-        $this->_conf = $_conf;
+        
+    public function __construct() {
         add_action('admin_menu', array($this, 'admin_menu'));
     }
 
@@ -28,85 +26,48 @@ class WC_Correios_Status_Parser {
             'status' => 'processing',
         );
         $orders = wc_get_orders( $args );
-        include( 'views/orders.php' );
         
-        foreach ($orders as $key => $value) {
-            if($value->get_order_number() != 251)
-                die;
-            $correiosTrack = $value->get_meta('_correios_tracking_code');
-            $eventos = self::getListEvents($correiosTrack);
-            echo '<pre>'; var_dump($eventos); echo '</pre>';
-        }
-        
-        
-    }
-    
-    public function getListEvents($correiosTrack){
-        $data = array(
-            'objetos' => $correiosTrack
-        );
-        
-        $correiosPage = self::getPage($data);
-        
-        /**
-         * Regexp para captura da <table>
-         * @var [type]
-         */
-        preg_match_all($this->_conf['regexp']['table'], $correiosPage, $cTable, PREG_SET_ORDER,0);
-        
-        /**
-         * Regeexp para captura das <tr>
-         * @var [type]
-         */
-        preg_match_all($this->_conf['regexp']['tr'], $cTable[0][0], $cTr);
-        
-        
-        /* Percorre todas <tr> para capturar eventos */
-        $events = [];
-        foreach ($cTr[0] as $event_id => $vTr) {
-            preg_match_all($this->_conf['regexp']['dtEvent'], $vTr, $vTd);
-            $new_str = str_replace("&nbsp;", ' ', strip_tags($vTd[0][0]));
-            $lines = explode("\n", $new_str);
+        $data = array();
+        $objectsCompleteds = 0;
+        foreach ($orders as $key => $order) {
+                
+            $Correios = new \Baru\Correios\RastreioParser();
+            $correiosTrack = $order->get_meta('_correios_tracking_code');
+            if($correiosTrack == "") continue;
+            $Correios->setCode($correiosTrack);
+            $evento = $Correios->getEventLast();
+                        
+            $data[] = array(
+                'pedido'    => "<a href='" . $order->get_view_order_url() . "'>" . $order->get_order_number() . "</a>",
+                'nome'      => $order->get_formatted_billing_full_name(),
+                'rastreio'  => $correiosTrack,
+                'status'    => "<b>" . $evento->getLabel() . "</b>",
+                'data'      => $evento->getDate() . " " . $evento->getHour(),
+                'descricao' => $evento->getDescription()
+            );
             
-            foreach ($lines as $i => $line) {
-                $line = ltrim($line);
-                if(!empty($line)){
-                    if(preg_match($this->_conf['regexp']['date'],$line)){
-                        $events[$event_id]['date'] = $line;
-                    }else{
-                        if(preg_match($this->_conf['regexp']['hour'],$line)){
-                            $events[$event_id]['hour'] = $line;
-                        }else{
-                            $events[$event_id]['location'] = $line;
-                        }
-                    }
-                }
+            
+            if($evento->getLabel() == 'Objeto entregue ao destinatário '){
+                $objectsCompleteds++;
+                // $order->update_status( 'completed',  'Objeto entregue ao destinatário');
             }
             
-            preg_match_all($this->_conf['regexp']['lbEvent'], $vTr, $vTd);
+        }
+        
+        $table = new WC_Correios_Status_Parser_Table();
+        $table->setData($data);
+        $table->prepare_items();
+        
+        ?>
 
-            $new_str = str_replace("&nbsp;", ' ', strip_tags($vTd[0][0]));
-            $lines = explode("\n", $new_str);
-            
-            foreach ($lines as $line) {
-                $line = ltrim($line);
-                if(!empty($line))
-                    $events[$event_id]['label'] = $line;
-            }
-        }
+        <h1>Correios Rastreio Parser</h1>
+        <div class="wrap">
+            <p>
+                Objetos entregues atualizados: <?php echo $objectsCompleteds; ?>
+            </p>
+            <?php $table->display(); ?>
+        </div>
+        <?php
         
-        return $events;
-    }
-    
-    private function getPage($data){
-        $ch = curl_init($this->_conf['urlParser']);
-        $postString = http_build_query($data, '', '&');
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $correiosPage = utf8_encode(curl_exec($ch));
-        curl_close($ch);
-        
-        return $correiosPage;
     }
 }
