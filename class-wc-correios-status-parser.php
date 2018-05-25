@@ -24,6 +24,8 @@ class WC_Correios_Status_Parser {
         $args = array(
             'limit' => 10,
             'status' => 'processing',
+            'orderby' => 'date',
+            'order' => 'ASC'
         );
         $orders = wc_get_orders( $args );
         
