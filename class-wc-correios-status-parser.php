@@ -51,7 +51,7 @@ class WC_Correios_Status_Parser {
             
             if($evento->getLabel() == 'Objeto entregue ao destinatário '){
                 $objectsCompleteds++;
-                // $order->update_status( 'completed',  'Objeto entregue ao destinatário');
+                $order->update_status( 'completed',  'Objeto entregue ao destinatário');
             }
             
         }
