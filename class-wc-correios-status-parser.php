@@ -41,7 +41,7 @@ class WC_Correios_Status_Parser {
             
             if(!$evento){
                 $data[] = array(
-                    'pedido'    => "<a href='" . $order->get_view_order_url() . "'>" . $order->get_order_number() . "</a>",
+                    'pedido'    => "<a href='" . $order->get_edit_order_url() . "'>" . $order->get_order_number() . "</a>",
                     'nome'      => $order->get_formatted_billing_full_name(),
                     'rastreio'  => $correiosTrack,
                     'status'    => "<b>ERRO AO BUSCAR CÓDIGO</b>",
@@ -50,7 +50,7 @@ class WC_Correios_Status_Parser {
                 );
             }else{    
                 $data[] = array(
-                    'pedido'    => "<a href='" . $order->get_view_order_url() . "'>" . $order->get_order_number() . "</a>",
+                    'pedido'    => "<a href='" . $order->get_edit_order_url() . "'>" . $order->get_order_number() . "</a>",
                     'nome'      => $order->get_formatted_billing_full_name(),
                     'rastreio'  => $correiosTrack,
                     'status'    => "<b>" . $evento->getLabel() . "</b>",
