@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "63ff26eface7c4f95dba629a1b510987",
+    "content-hash": "2cbc2debaed9e1f8ba0fcd5112960c50",
     "packages": [
         {
             "name": "baru/correios",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asaferamos/correios-rastreio-api-parser.git",
-                "reference": "2ca7b10670ada1ef2fcd344a74424441622a0394"
+                "reference": "98b124113237b6e9701c79db81ad4c52d6d4cb24"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/asaferamos/correios-rastreio-api-parser/zipball/98b124113237b6e9701c79db81ad4c52d6d4cb24",
+                "reference": "98b124113237b6e9701c79db81ad4c52d6d4cb24",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.4"
@@ -26,6 +32,7 @@
                     "Baru\\Correios\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -41,15 +48,13 @@
                 "correios api",
                 "rastrerio correios"
             ],
-            "time": "2018-05-25T02:14:26+00:00"
+            "time": "2018-05-26T01:25:03+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "baru/correios": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
