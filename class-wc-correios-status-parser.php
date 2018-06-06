@@ -23,7 +23,7 @@ class WC_Correios_Status_Parser {
     public function output() {
         $args = array(
             'limit' => 20,
-            'status' => 'processing',
+            'status' => 'wc-order-dispatched',
             'orderby' => 'date',
             'order' => 'ASC'
         );
