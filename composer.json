@@ -13,6 +13,6 @@
         }
     ],
     "require": {
-        "baru/correios": "1.0.0"
+        "baru/correios": "^1.0"
     }
 }

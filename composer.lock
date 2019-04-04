@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2cbc2debaed9e1f8ba0fcd5112960c50",
+    "content-hash": "f40058b77758407a58e77a2d3c456127",
     "packages": [
         {
             "name": "baru/correios",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asaferamos/correios-rastreio-api-parser.git",
-                "reference": "98b124113237b6e9701c79db81ad4c52d6d4cb24"
+                "reference": "6ef98872f9f5955e52f470785f034388e5920b64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asaferamos/correios-rastreio-api-parser/zipball/98b124113237b6e9701c79db81ad4c52d6d4cb24",
-                "reference": "98b124113237b6e9701c79db81ad4c52d6d4cb24",
+                "url": "https://api.github.com/repos/asaferamos/correios-rastreio-api-parser/zipball/6ef98872f9f5955e52f470785f034388e5920b64",
+                "reference": "6ef98872f9f5955e52f470785f034388e5920b64",
                 "shasum": ""
             },
             "require": {
@@ -48,7 +48,7 @@
                 "correios api",
                 "rastrerio correios"
             ],
-            "time": "2018-05-26T01:25:03+00:00"
+            "time": "2018-09-19T13:02:32+00:00"
         }
     ],
     "packages-dev": [],
