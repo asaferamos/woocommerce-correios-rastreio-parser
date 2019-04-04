@@ -1,6 +1,9 @@
 # WooCommerce Correios Rastreio Parser
 Plugin Wordpress para atualização de status dos pedidos do WooCommerce para _concluído_.
 
+### Instalação
+`composer install`
+
 ### Dependência
 O plugin se utiliza desta [lib](https://github.com/asaferamos/correios-rastreio-api-parser) para parsear da página dos correios 
 
